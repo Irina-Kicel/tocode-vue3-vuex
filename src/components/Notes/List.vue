@@ -1,6 +1,6 @@
 <template>
   <div class="notes-list">
-    <div class="note-item" v-for="(note, i) in getNotes" :key="i">
+    <div class="note-item" v-for="(note, i) in notes" :key="i">
       <div class="note-header">
         <p>{{ note.title }}</p>
         <p style="cursor: pointer;" @click="this.$store.dispatch('remove', i)">
@@ -20,13 +20,27 @@
 
 <script>
 import TagsList from '@/components/UI/TagsList.vue'
+
 export default {
   components: { TagsList },
+  data() {
+    return {
+      notes: []
+    }
+   },
   computed: {
-    getNotes() {
+    getNotesAll() {
       return this.$store.getters.getAllNotes
     }
-  }
+  },
+  methods: {
+    getNotes() {
+      this.notes = this.getNotesAll
+      }
+    },
+  mounted() {
+      this.getNotes()
+    }
 }
 </script>
 

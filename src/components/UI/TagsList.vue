@@ -2,10 +2,10 @@
   <div class="tags-list">
     <div
       class="tag-item"
-      v-for="item in items"
-      :key="item"
-      @click="$emit('onItemClick', item)"
-      :class="{ isPreview: isPreview }"
+      v-for="item, i in items"
+      :key="i"
+      @click="onItemClick($event, i)"
+      :class="{ isPreview: isPreview, isActive: isActive }"
     >
       <span>{{ item }}</span>
     </div>
@@ -26,6 +26,17 @@ export default {
     isPreview: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    onItemClick($event, i) {
+      let tag = this.items.filter((t) => {
+      if(t == $event.target.textContent)
+      return t })
+      tag = tag.join('')
+      // tag ? this.isActive = true : this.isActive = false
+      //this.$emit('isActive', this.isActive)
+      this.$emit('onItemClick', {tag, i})
     }
   }
 }

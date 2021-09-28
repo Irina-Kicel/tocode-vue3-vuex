@@ -1,7 +1,6 @@
 import { createStore } from 'vuex'
 import storage from '@/utils/storage.js'
 export const store = createStore({
-
   state: {
     notes: [
       {
@@ -22,26 +21,25 @@ export const store = createStore({
       storage.set('notes', state.notes)
 
     },
-
     remove(state, i){
 		  state.notes.splice(i, 1);
       storage.set('notes', state.notes)
 		},
     setLocalStorage(state, notes){
+      state.notes = notes
       storage.set('notes', notes)
     }
   },
   actions: {
-    addNotes({commit}, {title, tags}){
-
+    addNotes({getters, commit}, {title, tags}){
       let setNote = {
-        id: Math.round(Math.random()*10),
+        id: getters.getCountNote + 1,
         title: title,
         tags:  tags
       }
       commit('addNotes', setNote);
     },
-  setLocalStorage(context, notes) {
+    setLocalStorage(context, notes) {
       context.commit('setLocalStorage', notes)
   },
     remove(store, i){
@@ -52,6 +50,9 @@ export const store = createStore({
   getters: {
     getAllNotes(state){
       return state.notes
+    },
+    getCountNote(state){
+      return state.notes.length
     }
   }
 })
